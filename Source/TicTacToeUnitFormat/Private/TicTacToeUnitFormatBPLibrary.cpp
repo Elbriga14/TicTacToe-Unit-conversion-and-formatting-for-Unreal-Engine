@@ -14,9 +14,7 @@ double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fr
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
 	if (!LengthConversionsToM.Contains(toUnit)) return 0.0;
-
-	const double to_meters = length * LengthConversionsToM[fromUnit];
-	return to_meters / LengthConversionsToM[toUnit];
+	return ( length * LengthConversionsToM[fromUnit] ) / LengthConversionsToM[toUnit];
 }
 
 FText UTicTacToeUnitFormatBPLibrary::FormatLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
@@ -83,9 +81,7 @@ double UTicTacToeUnitFormatBPLibrary::ConvertWeight(float length, EWeightUnit fr
 {
 	if (!WeightConversionToKG.Contains(fromUnit)) return 0.0;
 	if (!WeightConversionToKG.Contains(toUnit)) return 0.0;
-
-	const double to_kg = length * WeightConversionToKG[fromUnit];
-	return to_kg / WeightConversionToKG[toUnit];
+	return ( length * WeightConversionToKG[fromUnit] ) / WeightConversionToKG[toUnit];
 }
 
 FText UTicTacToeUnitFormatBPLibrary::FormatWeight(float weight, EWeightUnit fromUnit, EWeightUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
@@ -153,8 +149,7 @@ double UTicTacToeUnitFormatBPLibrary::ConvertVolume(float volume, EVolumeUnit fr
 	if (!VolumeConversionToM3.Contains(fromUnit)) return 0.0;
 	if (!VolumeConversionToM3.Contains(toUnit)) return 0.0;
 
-	const double to_m3 = volume * VolumeConversionToM3[fromUnit];
-	return to_m3 / VolumeConversionToM3[toUnit];
+	return ( volume * VolumeConversionToM3[fromUnit] ) / VolumeConversionToM3[toUnit];
 }
 
 FText UTicTacToeUnitFormatBPLibrary::FormatVolume(float volume, EVolumeUnit fromUnit, EVolumeUnit toUnit, EAutoVolumeUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
@@ -218,6 +213,77 @@ FText UTicTacToeUnitFormatBPLibrary::FormatVolume(float volume, EVolumeUnit from
 		FText::FromString("{0}{1}"),
 		UKismetTextLibrary::Conv_DoubleToText(volume_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
 		VolumeUnitDisplayStrings[target_unit]
+	);
+}
+
+double UTicTacToeUnitFormatBPLibrary::ConvertArea(float volume, EAreaUnit fromUnit, EAreaUnit toUnit)
+{
+	if (!AreaConversionToM2.Contains(fromUnit)) return 0.0;
+	if (!AreaConversionToM2.Contains(toUnit)) return 0.0;
+	return ( volume * AreaConversionToM2[fromUnit] ) / AreaConversionToM2[toUnit];
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatArea(float volume, EAreaUnit fromUnit, EAreaUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+{
+	if (!AreaConversionToM2.Contains(fromUnit)) return FText();
+
+	// Convert incoming unit to meters
+	double area_m2 = volume * AreaConversionToM2[fromUnit];
+
+	EAreaUnit target_unit = toUnit;
+
+	// Auto unit
+	switch (AutoUnit)
+	{
+	case EAutoUnitType::AUT_OFF: break;
+	case EAutoUnitType::AUT_MET_AUTO:
+		if (area_m2 < 0.0001) {
+			target_unit = EAreaUnit::AU_MET_MM2;
+			break;
+		}
+		if (area_m2 < 0.1) {
+			target_unit = EAreaUnit::AU_MET_CM2;
+			break;
+		}
+		if (area_m2 < 10000.0) {
+			target_unit = EAreaUnit::AU_MET_M2;
+			break;
+		}
+		if (area_m2 < 100000000.0) {
+			target_unit = EAreaUnit::AU_MET_HA;
+			break;
+		}
+		target_unit = EAreaUnit::AU_MET_KM2;
+		break;
+	case EAutoUnitType::AUT_IMP_US_AUTO:
+		if (area_m2 < 0.01) {
+			target_unit = EAreaUnit::AU_US_SQIN;
+			break;
+		}
+		if (area_m2 < 0.1) {
+			target_unit = EAreaUnit::AU_US_SQFT;
+			break;
+		}
+		if (area_m2 < 4000) {
+			target_unit = EAreaUnit::AU_US_SQYD;
+			break;
+		}
+		target_unit = EAreaUnit::AU_US_ACRE;
+		break;
+
+	default: break;
+	}
+
+	if (!AreaConversionToM2.Contains(target_unit)) return FText();
+	if (!AreaUnitDisplayStrings.Contains(target_unit)) return FText();
+
+	// Convert meters to target unit
+	double area_converted = area_m2 / AreaConversionToM2[target_unit];
+
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(area_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		AreaUnitDisplayStrings[target_unit]
 	);
 }
 

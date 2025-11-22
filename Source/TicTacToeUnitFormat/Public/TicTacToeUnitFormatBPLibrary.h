@@ -163,6 +163,27 @@ enum class EVolumeUnit : uint8
 	VU_US_ACREFT			UMETA(DisplayName = "acre-foot (US)"),
 };
 
+UENUM(BlueprintType)
+enum class EAreaUnit : uint8
+{
+	// Metric
+	AU_MET_MM2				UMETA(DisplayName = "millimeter squared"),
+	AU_MET_CM2				UMETA(DisplayName = "centimeter squared"),
+	AU_MET_DM2				UMETA(DisplayName = "decimeter squared"),
+	AU_MET_M2				UMETA(DisplayName = "meter squared"),
+	AU_MET_DAM2				UMETA(DisplayName = "decameter squared"),
+	AU_MET_HM2				UMETA(DisplayName = "hectometer squared"),
+	AU_MET_HA				UMETA(DisplayName = "hectare"),
+	AU_MET_KM2				UMETA(DisplayName = "kilometer squared"),
+	// Imperial US
+	AU_US_SQIN				UMETA(DisplayName = "square inch (US)"),
+	AU_US_SQFT				UMETA(DisplayName = "square foot (US)"),
+	AU_US_SQYD				UMETA(DisplayName = "square yard (US)"),
+	AU_US_SQCH				UMETA(DisplayName = "square chain (US)"),
+	AU_US_ACRE				UMETA(DisplayName = "acre (US)"),
+	AU_US_SEC				UMETA(DisplayName = "section (US)"),
+	AU_US_TWP				UMETA(DisplayName = "survey township (US)"),
+}
 
 UCLASS()
 class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
@@ -400,7 +421,49 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ EVolumeUnit::VU_US_ACREFT			, LOCTEXT("us_acrefoot"	, "acre-foot")	},
 	};
 
+	// --- --- AREA --- --- //
 
+	inline static const TMap<EAreaUnit, double> AreaConversionToM2 =
+	{
+		// Metric
+		{ EAreaUnit::AU_MET_MM2				, 0.000001			},
+		{ EAreaUnit::AU_MET_CM2				, 0.0001			},
+		{ EAreaUnit::AU_MET_DM2				, 0.01				},
+		{ EAreaUnit::AU_MET_M2				, 1.0				},
+		{ EAreaUnit::AU_MET_DAM2			, 100.0				},
+		{ EAreaUnit::AU_MET_HM2				, 10000.0			},
+		{ EAreaUnit::AU_MET_HA				, 1000000.0			},
+		{ EAreaUnit::AU_MET_KM2				, 100000000.0		},
+		// Imperial US						  
+		{ EAreaUnit::AU_US_SQIN				, 0,00064516		},
+		{ EAreaUnit::AU_US_SQFT				, 0.09290304		},
+		{ EAreaUnit::AU_US_SQYD				, 0.83612736		},
+		{ EAreaUnit::AU_US_SQCH				, 404.68564224		},
+		{ EAreaUnit::AU_US_ACRE				, 4046.8564224		},
+		{ EAreaUnit::AU_US_SEC				, 258999800.0		},
+		{ EAreaUnit::AU_US_TWP				, 9323993000.0		},
+	};
+
+	inline static const TMap<EAreaUnit, FText> AreaUnitDisplayStrings =
+	{
+		// Metric
+		{ EAreaUnit::AU_MET_MM2				, LOCTEXT(	"met_mm2",	"mm2"	)	},
+		{ EAreaUnit::AU_MET_CM2				, LOCTEXT(	"met_cm2",	"cm2"	)	},
+		{ EAreaUnit::AU_MET_DM2				, LOCTEXT(	"met_dm2",	"dm2"	)	},
+		{ EAreaUnit::AU_MET_M2				, LOCTEXT(	"met_m2",	"m2"	)	},
+		{ EAreaUnit::AU_MET_DAM2			, LOCTEXT(	"met_dam2",	"Dam2"	)	},
+		{ EAreaUnit::AU_MET_HM2				, LOCTEXT(	"met_hm2",	"hm2"	)	},
+		{ EAreaUnit::AU_MET_HA				, LOCTEXT(	"met_ha",	"ha"	)	},
+		{ EAreaUnit::AU_MET_KM2				, LOCTEXT(	"met_km2",	"km2"	)	},
+		// Imperial US						  
+		{ EAreaUnit::AU_US_SQIN				, LOCTEXT(	"us_sqin",	"sq in")	},
+		{ EAreaUnit::AU_US_SQFT				, LOCTEXT(	"us_sqft",	"sq ft")	},
+		{ EAreaUnit::AU_US_SQYD				, LOCTEXT(	"us_sqyd",	"sq yd")	},
+		{ EAreaUnit::AU_US_SQCH				, LOCTEXT(	"us_sq ch",	"sq ch")	},
+		{ EAreaUnit::AU_US_ACRE				, LOCTEXT(	"us_acre",	"acre")		},
+		{ EAreaUnit::AU_US_SEC				, LOCTEXT(	"us_sec",	"sec")		},
+		{ EAreaUnit::AU_US_TWP				, LOCTEXT(	"us_twp",	"twp")		},
+	};
 
 #undef LOCTEXT_NAMESPACE
 
@@ -425,4 +488,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatVolume(float volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	static double ConvertArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
 };
