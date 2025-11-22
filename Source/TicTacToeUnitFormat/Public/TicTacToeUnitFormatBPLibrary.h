@@ -435,7 +435,7 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ EAreaUnit::AU_MET_HA				, 1000000.0			},
 		{ EAreaUnit::AU_MET_KM2				, 100000000.0		},
 		// Imperial US						  
-		{ EAreaUnit::AU_US_SQIN				, 0,00064516		},
+		{ EAreaUnit::AU_US_SQIN				, 0.00064516		},
 		{ EAreaUnit::AU_US_SQFT				, 0.09290304		},
 		{ EAreaUnit::AU_US_SQYD				, 0.83612736		},
 		{ EAreaUnit::AU_US_SQCH				, 404.68564224		},
