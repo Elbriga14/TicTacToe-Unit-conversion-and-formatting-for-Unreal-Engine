@@ -25,6 +25,7 @@ ELengthUnit UTicTacToeUnitFormatBPLibrary::GetAutoLength(double length_meters, E
 
 	default: return ELengthUnit::LU_MET_M;
 	}
+	return ELengthUnit::LU_MET_M;
 }
 
 EPressureUnit UTicTacToeUnitFormatBPLibrary::GetAutoPressure(double pressure_pascals, EAutoPressureUnitType AutoUnit)

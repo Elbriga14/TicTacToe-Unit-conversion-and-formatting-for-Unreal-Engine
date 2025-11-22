@@ -216,7 +216,7 @@ UENUM(BlueprintType)
 enum class EPressureUnit : uint8
 {
 	// Metric
-	PU_MET_MPA			UMETA(DisplayName = "deciascal"),
+	PU_MET_MILIPA		UMETA(DisplayName = "deciascal"),
 	PU_MET_CPA			UMETA(DisplayName = "centiascal"),
 	PU_MET_DPA			UMETA(DisplayName = "decipascal"),
 	PU_MET_PA			UMETA(DisplayName = "pascal"),
@@ -547,7 +547,7 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 	inline static const TMap<EPressureUnit, double> PressureConversionToPa =
 	{
-		{ EPressureUnit::PU_MET_MPA			, 0.001					},
+		{ EPressureUnit::PU_MET_MILIPA		, 0.001					},
 		{ EPressureUnit::PU_MET_CPA			, 0.01					},
 		{ EPressureUnit::PU_MET_DPA			, 0.1					},
 		{ EPressureUnit::PU_MET_PA			, 1.0					},
@@ -563,7 +563,7 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 	inline static const TMap<EPressureUnit, FText> PressureUnitDisplayStrings =
 	{
-		{ EPressureUnit::PU_MET_MPA			, LOCTEXT("met_mPa", "mPa")		},
+		{ EPressureUnit::PU_MET_MILIPA		, LOCTEXT("met_miliPa", "mPa")	},
 		{ EPressureUnit::PU_MET_CPA			, LOCTEXT("met_cPa", "cPa")		},
 		{ EPressureUnit::PU_MET_DPA			, LOCTEXT("met_dPa", "dPa")		},
 		{ EPressureUnit::PU_MET_PA			, LOCTEXT("met_Pa", "Pa")		},
