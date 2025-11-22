@@ -283,5 +283,41 @@ FText UTicTacToeUnitFormatBPLibrary::FormatArea(float volume, EAreaUnit fromUnit
 	);
 }
 
+double UTicTacToeUnitFormatBPLibrary::ConvertTemperature(float temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit)
+{
+	double temp_k = 0.0;
+	switch (fromUnit)
+	{
+		case ETemperatureUnit::TU_CEL:
+			temp_k = temperature + 273.15;
+			break;
+		case ETemperatureUnit::TU_KEL:
+			temp_k = temperature;
+			break;
+		case ETemperatureUnit::TU_FAR:
+			temp_k = (temperature - 32.0) * 0.5555555555555 + 273.15;
+	}
+	switch (toUnit)
+	{
+		case ETemperatureUnit::TU_CEL:
+			return temperature - 273.15;
+		case ETemperatureUnit::TU_KEL:
+			return temperature;
+		case ETemperatureUnit::TU_FAR:
+			return (temperature - 273.15) * 0.5555555555555 + 32;
+	}
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatTemperature(float temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit, int precision, bool ForceSign, bool UseGrouping)
+{
+	if (!TemperatureUnitDisplayStrings.Contains(toUnit)) return FText();
+	double temp_converted = ConvertTemperature(temperature, fromUnit, toUnit);
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(temp_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		TemperatureUnitDisplayStrings[toUnit]
+	);
+}
+
 
 

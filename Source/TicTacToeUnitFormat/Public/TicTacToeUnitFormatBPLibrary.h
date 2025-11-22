@@ -183,7 +183,16 @@ enum class EAreaUnit : uint8
 	AU_US_ACRE				UMETA(DisplayName = "acre (US)"),
 	AU_US_SEC				UMETA(DisplayName = "section (US)"),
 	AU_US_TWP				UMETA(DisplayName = "survey township (US)"),
-}
+};
+
+UENUM(BlueprintType)
+enum class ETemperatureUnit : uint8
+{
+	TU_CEL					UMETA(DisplayName = "Celcius"),
+	TU_FAR					UMETA(DisplayName = "Farenheit"),
+	TU_KEL					UMETA(DisplayName = "Kelvin"),
+};
+
 
 UCLASS()
 class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
@@ -465,6 +474,16 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ EAreaUnit::AU_US_TWP				, LOCTEXT(	"us_twp",	"twp")		},
 	};
 
+	// --- --- TEMPERATURE --- --- //
+
+
+	inline static const TMap<ETemperatureUnit, FText> TemperatureUnitDisplayStrings =
+	{
+		{ ETemperatureUnit::TU_CEL			, LOCTEXT("cel",		"°C")		},
+		{ ETemperatureUnit::TU_FAR			, LOCTEXT("far",		"°F")		},
+		{ ETemperatureUnit::TU_KEL			, LOCTEXT("kel",		"K")		},
+	};
+
 #undef LOCTEXT_NAMESPACE
 
 public:
@@ -476,11 +495,13 @@ public:
 	static FText FormatLength(float length, ELengthUnit fromUnit=ELengthUnit::LU_MET_CM, ELengthUnit toUnit=ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 	
 
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
 	static double ConvertWeight(float length, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatWeight(float weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
@@ -490,10 +511,19 @@ public:
 	static FText FormatVolume(float volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 
 
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
 	static double ConvertArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	static double ConvertTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 };
