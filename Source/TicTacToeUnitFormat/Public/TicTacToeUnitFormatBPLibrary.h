@@ -498,12 +498,12 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 	inline static const TMap<ETimeUnit, double> TimeConversionToS =
 	{
-		{ ETimeUnit::TU_SEC	,	1.0			},
-		{ ETimeUnit::TU_MIN	,	60.0		},
-		{ ETimeUnit::TU_HR	,	3600.0		},
-		{ ETimeUnit::TU_DAY	,	86400.0		},
-		{ ETimeUnit::TU_MO	,	2592000.0	},
-		{ ETimeUnit::TU_YR	,	31536000.0	},
+		{ ETimeUnit::TU_SEC	,	1.0										},
+		{ ETimeUnit::TU_MIN	,	0.01666666666666666666666666666667		},
+		{ ETimeUnit::TU_HR	,	2.7777777777777777777777777777778e-4	},
+		{ ETimeUnit::TU_DAY	,	1.1574074074074074074074074074074e-5	},
+		{ ETimeUnit::TU_MO	,	3.858024691358024691358024691358e-7		},
+		{ ETimeUnit::TU_YR	,	3.1709791983764586504312531709792e-8	},
 	};
 
 	inline static const TMap<ETimeUnit, FText> TimeUnitDisplayStrings =
@@ -519,6 +519,10 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 
 #undef LOCTEXT_NAMESPACE
+
+
+	static ELengthUnit GetAutoLength(double length_meters, EAutoUnitType AutoUnit);
+
 
 public:
 	
@@ -567,4 +571,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatTime(float volume, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC, bool AutoUnit = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	static double ConvertSpeed(float speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatSpeed(float speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC, EAutoUnitType AutoLengthUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 };

@@ -6,6 +6,27 @@
 
 
 
+ELengthUnit UTicTacToeUnitFormatBPLibrary::GetAutoLength(double length_meters, EAutoUnitType AutoUnit)
+{
+	switch (AutoUnit)
+	{
+	case EAutoUnitType::AUT_OFF: break;
+	case EAutoUnitType::AUT_MET_AUTO:
+		if (length_meters < 0.01)	return ELengthUnit::LU_MET_MM;
+		if (length_meters < 1.0)	return ELengthUnit::LU_MET_CM;
+		if (length_meters < 1000.0)	return ELengthUnit::LU_MET_M;
+		return ELengthUnit::LU_MET_KM;
+	
+	case EAutoUnitType::AUT_IMP_US_AUTO:
+		if (length_meters < 0.5)	return ELengthUnit::LU_US_INCH;
+		if (length_meters < 2.0)	return ELengthUnit::LU_US_FOOT;
+		if (length_meters < 500)	return ELengthUnit::LU_US_YARD;
+		return ELengthUnit::LU_US_MILE;
+
+	default: return ELengthUnit::LU_MET_M;
+	}
+}
+
 double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit)
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
@@ -15,56 +36,16 @@ double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fr
 
 FText UTicTacToeUnitFormatBPLibrary::FormatLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
-	if (!LengthConversionsToM.Contains(fromUnit)) return FText();
-	
-	// Convert incoming unit to meters
-	double length_meters = length * LengthConversionsToM[fromUnit];
+	double length_meters = ConvertLength(length, fromUnit, ELengthUnit::LU_MET_M);
 
 	ELengthUnit target_unit = toUnit;
 
-	// Auto unit
-	switch (AutoUnit)
-	{
-	case EAutoUnitType::AUT_OFF: break;
-	case EAutoUnitType::AUT_MET_AUTO:
-		if (length_meters < 0.01) {
-			target_unit = ELengthUnit::LU_MET_MM;
-			break;
-		}
-		if (length_meters < 1.0) {
-			target_unit = ELengthUnit::LU_MET_CM;
-			break;
-		}
-		if (length_meters < 1000.0) {
-			target_unit = ELengthUnit::LU_MET_M;
-			break;
-		}
-		target_unit = ELengthUnit::LU_MET_KM;
-		break;
-	case EAutoUnitType::AUT_IMP_US_AUTO:
-		if (length_meters < 0.5) {
-			target_unit = ELengthUnit::LU_US_INCH;
-			break;
-		}
-		if (length_meters < 2.0) {
-			target_unit = ELengthUnit::LU_US_FOOT;
-			break;
-		}
-		if (length_meters < 500) {
-			target_unit = ELengthUnit::LU_US_YARD;
-			break;
-		}
-		target_unit = ELengthUnit::LU_US_MILE;
-		break;
+	if (AutoUnit == EAutoUnitType::AUT_MET_AUTO || AutoUnit == EAutoUnitType::AUT_MET_AUTO)
+		target_unit = GetAutoLength(length_meters, AutoUnit);
 
-	default: break;
-	}
-
-	if ( !LengthConversionsToM.Contains(target_unit) ) return FText();
-	if ( !LengthUnitDisplayStrings.Contains(target_unit) ) return FText();
+	double length_converted = ConvertLength(length_meters, ELengthUnit::LU_MET_M, toUnit);
 	
-	// Convert meters to target unit
-	double length_converted = length_meters / LengthConversionsToM[target_unit];
+	if ( !LengthUnitDisplayStrings.Contains(target_unit) ) return FText();
 
 	return FText::Format(
 		FText::FromString("{0}{1}"),
@@ -362,6 +343,35 @@ FText UTicTacToeUnitFormatBPLibrary::FormatTime(float volume, ETimeUnit fromUnit
 		FText::FromString("{0}{1}"),
 		UKismetTextLibrary::Conv_DoubleToText(time_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
 		TimeUnitDisplayStrings[target_unit]
+	);
+}
+
+double UTicTacToeUnitFormatBPLibrary::ConvertSpeed(float speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit)
+{
+	return ConvertLength(ConvertTime(speed, ETimeUnit::TU_SEC, toTimeUnit), fromLengthUnit, toLengthUnit);
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(float speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit, EAutoUnitType AutoLengthUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+{
+	ELengthUnit target_unit = toLengthUnit;
+	
+	double speed_converted = ConvertSpeed(speed, fromLengthUnit, ELengthUnit::LU_MET_M, fromTimeUnit, toTimeUnit);
+
+	// Convert to m/time, determine best unit, then convert to that unit
+	if (AutoLengthUnit == EAutoUnitType::AUT_MET_AUTO || AutoLengthUnit == EAutoUnitType::AUT_IMP_US_AUTO) {
+		speed_converted = ConvertSpeed(speed, fromLengthUnit, ELengthUnit::LU_MET_M, fromTimeUnit, toTimeUnit);
+		target_unit = GetAutoLength(speed_converted, AutoLengthUnit);
+		speed_converted = ConvertSpeed(speed, fromLengthUnit, target_unit, fromTimeUnit, toTimeUnit);
+	}
+	
+	if (!LengthUnitDisplayStrings.Contains(target_unit)) return FText();
+	if (!TimeUnitDisplayStrings.Contains(toTimeUnit)) return FText();
+
+	return FText::Format(
+		FText::FromString("{0}{1}/{2}"),
+		UKismetTextLibrary::Conv_DoubleToText(speed_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		LengthUnitDisplayStrings[target_unit],
+		TimeUnitDisplayStrings[toTimeUnit]
 	);
 }
 
