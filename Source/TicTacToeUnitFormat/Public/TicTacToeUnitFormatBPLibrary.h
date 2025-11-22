@@ -193,6 +193,16 @@ enum class ETemperatureUnit : uint8
 	TU_KEL					UMETA(DisplayName = "Kelvin"),
 };
 
+UENUM(BlueprintType)
+enum class ETimeUnit : uint8
+{
+	TU_SEC					UMETA(DisplayName = "Second"),
+	TU_MIN					UMETA(DisplayName = "Minute"),
+	TU_HR					UMETA(DisplayName = "Hour"),
+	TU_DAY					UMETA(DisplayName = "Day"),
+	TU_MO					UMETA(DisplayName = "Month"),
+	TU_YR					UMETA(DisplayName = "Year"),
+};
 
 UCLASS()
 class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
@@ -476,7 +486,6 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 	// --- --- TEMPERATURE --- --- //
 
-
 	inline static const TMap<ETemperatureUnit, FText> TemperatureUnitDisplayStrings =
 	{
 		{ ETemperatureUnit::TU_CEL			, LOCTEXT("cel",		"°C")		},
@@ -484,46 +493,78 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ ETemperatureUnit::TU_KEL			, LOCTEXT("kel",		"K")		},
 	};
 
+
+	// --- --- TIME --- --- //
+
+	inline static const TMap<ETimeUnit, double> TimeConversionToS =
+	{
+		{ ETimeUnit::TU_SEC	,	1.0			},
+		{ ETimeUnit::TU_MIN	,	60.0		},
+		{ ETimeUnit::TU_HR	,	3600.0		},
+		{ ETimeUnit::TU_DAY	,	86400.0		},
+		{ ETimeUnit::TU_MO	,	2592000.0	},
+		{ ETimeUnit::TU_YR	,	31536000.0	},
+	};
+
+	inline static const TMap<ETimeUnit, FText> TimeUnitDisplayStrings =
+	{
+		// Metric
+		{ ETimeUnit::TU_SEC	,	LOCTEXT( "second"	, "s" )			},
+		{ ETimeUnit::TU_MIN	,	LOCTEXT( "minute"	, "m" )			},
+		{ ETimeUnit::TU_HR	,	LOCTEXT( "hour"		, "h" )			},
+		{ ETimeUnit::TU_DAY	,	LOCTEXT( "day"		, "d" )			},
+		{ ETimeUnit::TU_MO	,	LOCTEXT( "month"	, "m" )			},
+		{ ETimeUnit::TU_YR	,	LOCTEXT( "year"		, "y" )			},
+	};
+
+
 #undef LOCTEXT_NAMESPACE
 
 public:
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertLength(float length, ELengthUnit fromUnit = ELengthUnit::LU_MET_CM, ELengthUnit toUnit = ELengthUnit::LU_MET_CM);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Format Length", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatLength(float length, ELengthUnit fromUnit=ELengthUnit::LU_MET_CM, ELengthUnit toUnit=ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 	
 
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertWeight(float length, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatWeight(float weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 
 
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertVolume(float volume, EVolumeUnit fromUnit = EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit = EVolumeUnit::VU_MET_CM3);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatVolume(float volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 
 
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "Convert Length", Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
 	static double ConvertTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (DisplayName = "FormatLength", Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
+	static double ConvertTime(float time, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatTime(float volume, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC, bool AutoUnit = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 };

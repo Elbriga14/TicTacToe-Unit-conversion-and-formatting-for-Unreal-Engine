@@ -305,6 +305,8 @@ double UTicTacToeUnitFormatBPLibrary::ConvertTemperature(float temperature, ETem
 			return temperature;
 		case ETemperatureUnit::TU_FAR:
 			return (temperature - 273.15) * 0.5555555555555 + 32;
+		default:
+			return 0.0;
 	}
 }
 
@@ -316,6 +318,50 @@ FText UTicTacToeUnitFormatBPLibrary::FormatTemperature(float temperature, ETempe
 		FText::FromString("{0}{1}"),
 		UKismetTextLibrary::Conv_DoubleToText(temp_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
 		TemperatureUnitDisplayStrings[toUnit]
+	);
+}
+
+double UTicTacToeUnitFormatBPLibrary::ConvertTime(float time, ETimeUnit fromUnit, ETimeUnit toUnit)
+{
+	if (!TimeConversionToS.Contains(fromUnit)) return 0.0;
+	if (!TimeConversionToS.Contains(toUnit)) return 0.0;
+	return (time * TimeConversionToS[fromUnit]) / TimeConversionToS[toUnit];
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatTime(float volume, ETimeUnit fromUnit, ETimeUnit toUnit, bool AutoUnit, int precision, bool ForceSign, bool UseGrouping)
+{
+	if (!TimeConversionToS.Contains(fromUnit)) return FText();
+
+	// Convert incoming unit to meters
+	double time_s = volume * TimeConversionToS[fromUnit];
+
+	ETimeUnit target_unit = toUnit;
+
+	// Auto unit
+	if (AutoUnit)
+	{
+		if (time_s < 60.0)
+			target_unit = ETimeUnit::TU_SEC;
+		else if (time_s < 3600.0)
+			target_unit = ETimeUnit::TU_MIN;
+		else if (time_s < 86400.0)
+			target_unit = ETimeUnit::TU_HR;
+		else if (time_s < 2592000.0)
+			target_unit = ETimeUnit::TU_MO;
+		else
+			target_unit = ETimeUnit::TU_YR;
+	}
+
+	if (!TimeConversionToS.Contains(target_unit)) return FText();
+	if (!TimeUnitDisplayStrings.Contains(target_unit)) return FText();
+
+	// Convert meters to target unit
+	double time_converted = time_s / TimeConversionToS[target_unit];
+
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(time_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		TimeUnitDisplayStrings[target_unit]
 	);
 }
 
