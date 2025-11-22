@@ -17,3 +17,6 @@ Extended unit support is planned with far more esoteric units. British imperial 
 <img width="1751" height="840" alt="image" src="https://github.com/user-attachments/assets/cd66052a-db6f-4b1f-a77a-9bdc10f36305" />
 
 <img width="1870" height="1028" alt="image" src="https://github.com/user-attachments/assets/79105b88-b2f0-462d-9a2a-b18c56000fe7" />
+
+Please note that this plugin is intended for unit display only, and not with gameplay systems. This is because units are first converted to an intermediary unit, such as meter, and reconverted to the unit to be displayed.
+Although the plugin is using double float precision, this may still lead to some substantial loss of precision in some unit conversions.
