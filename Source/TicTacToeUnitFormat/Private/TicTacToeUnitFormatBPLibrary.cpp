@@ -27,6 +27,19 @@ ELengthUnit UTicTacToeUnitFormatBPLibrary::GetAutoLength(double length_meters, E
 	}
 }
 
+EPressureUnit UTicTacToeUnitFormatBPLibrary::GetAutoPressure(double pressure_pascals, EAutoPressureUnitType AutoUnit)
+{
+	if (AutoUnit == EAutoPressureUnitType::AUT_MET_AUTO)
+	{
+		if (pressure_pascals < 0.1) return EPressureUnit::PU_MET_MPA;
+		if (pressure_pascals < 1000.0) return EPressureUnit::PU_MET_PA;
+		if (pressure_pascals < 1000000.0) return EPressureUnit::PU_MET_KPA;
+		if (pressure_pascals < 1000000000.0) return EPressureUnit::PU_MET_MPA;
+		return EPressureUnit::PU_MET_GPA;
+	}
+	return EPressureUnit::PU_MET_PA;
+}
+
 double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit)
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
@@ -372,6 +385,33 @@ FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(float speed, ELengthUnit fromLe
 		UKismetTextLibrary::Conv_DoubleToText(speed_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
 		LengthUnitDisplayStrings[target_unit],
 		TimeUnitDisplayStrings[toTimeUnit]
+	);
+}
+
+double UTicTacToeUnitFormatBPLibrary::ConvertPressure(float pressure, EPressureUnit fromUnit, EPressureUnit toUnit)
+{
+	if (!PressureConversionToPa.Contains(fromUnit)) return 0.0;
+	if (!PressureConversionToPa.Contains(toUnit)) return 0.0;
+	return (pressure * PressureConversionToPa[fromUnit]) / PressureConversionToPa[toUnit];
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatPressure(float pressure, EPressureUnit fromUnit, EPressureUnit toUnit, EAutoPressureUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+{
+	EPressureUnit target_unit = toUnit;
+
+	if (AutoUnit == EAutoPressureUnitType::AUT_MET_AUTO) {
+		double pressure_Pa = ConvertPressure(pressure, fromUnit, EPressureUnit::PU_MET_PA);
+		target_unit = GetAutoPressure(pressure_Pa, AutoUnit);
+	}
+
+	double pressure_converted = ConvertPressure(pressure, fromUnit, target_unit);
+
+	if (!PressureUnitDisplayStrings.Contains(target_unit)) return FText();
+
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(pressure_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		PressureUnitDisplayStrings[target_unit]
 	);
 }
 

@@ -44,6 +44,14 @@ enum class EAutoVolumeUnitType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EAutoPressureUnitType : uint8
+{
+	AUT_OFF					UMETA(DisplayName = "Off"),
+	AUT_MET_AUTO			UMETA(DisplayName = "Auto metric"),
+};
+
+
+UENUM(BlueprintType)
 enum class ELengthUnit : uint8
 {
 	// Metric
@@ -202,6 +210,24 @@ enum class ETimeUnit : uint8
 	TU_DAY					UMETA(DisplayName = "Day"),
 	TU_MO					UMETA(DisplayName = "Month"),
 	TU_YR					UMETA(DisplayName = "Year"),
+};
+
+UENUM(BlueprintType)
+enum class EPressureUnit : uint8
+{
+	// Metric
+	PU_MET_MPA			UMETA(DisplayName = "deciascal"),
+	PU_MET_CPA			UMETA(DisplayName = "centiascal"),
+	PU_MET_DPA			UMETA(DisplayName = "decipascal"),
+	PU_MET_PA			UMETA(DisplayName = "pascal"),
+	PU_MET_DAPA			UMETA(DisplayName = "decapascal"),
+	PU_MET_HPA			UMETA(DisplayName = "hectopascal"),
+	PU_MET_KPA			UMETA(DisplayName = "kilopascal"),
+	PU_MET_BAR			UMETA(DisplayName = "bar"),
+	PU_MET_MPA			UMETA(DisplayName = "megapascal"),
+	PU_MET_GPA			UMETA(DisplayName = "gigapascal"),
+	// Imperial (US)
+	PU_MET_PSI			UMETA(DisplayName = "PSI"),
 };
 
 UCLASS()
@@ -517,12 +543,46 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ ETimeUnit::TU_YR	,	LOCTEXT( "year"		, "y" )			},
 	};
 
+	// --- --- PRESSURE --- --- //
+
+	inline static const TMap<EPressureUnit, double> PressureConversionToPa =
+	{
+		{ EPressureUnit::PU_MET_MPA			, 0.001					},
+		{ EPressureUnit::PU_MET_CPA			, 0.01					},
+		{ EPressureUnit::PU_MET_DPA			, 0.1					},
+		{ EPressureUnit::PU_MET_PA			, 1.0					},
+		{ EPressureUnit::PU_MET_DAPA		, 10.0					},
+		{ EPressureUnit::PU_MET_HPA			, 100.0					},
+		{ EPressureUnit::PU_MET_KPA			, 1000.0				},
+		{ EPressureUnit::PU_MET_BAR			, 100000.0				},
+		{ EPressureUnit::PU_MET_MPA			, 1000000.0				},
+		{ EPressureUnit::PU_MET_GPA			, 1000000000.0			},
+		// Imperial (US)
+		{ EPressureUnit::PU_MET_PSI			, 6894.757				},
+	};
+
+	inline static const TMap<EPressureUnit, FText> PressureUnitDisplayStrings =
+	{
+		{ EPressureUnit::PU_MET_MPA			, LOCTEXT("met_mPa", "mPa")		},
+		{ EPressureUnit::PU_MET_CPA			, LOCTEXT("met_cPa", "cPa")		},
+		{ EPressureUnit::PU_MET_DPA			, LOCTEXT("met_dPa", "dPa")		},
+		{ EPressureUnit::PU_MET_PA			, LOCTEXT("met_Pa", "Pa")		},
+		{ EPressureUnit::PU_MET_DAPA		, LOCTEXT("met_daPa", "daPa")	},
+		{ EPressureUnit::PU_MET_HPA			, LOCTEXT("met_hPa", "hPa")		},
+		{ EPressureUnit::PU_MET_KPA			, LOCTEXT("met_kPa", "kPa")		},
+		{ EPressureUnit::PU_MET_BAR			, LOCTEXT("met_bar", "bar")		},
+		{ EPressureUnit::PU_MET_MPA			, LOCTEXT("met_MPa", "MPa")		},
+		{ EPressureUnit::PU_MET_GPA			, LOCTEXT("met_GPa", "GPa")		},
+		// Imperial (US)
+		{ EPressureUnit::PU_MET_PSI			, LOCTEXT("us_psi", "PSI")		},
+	};
 
 #undef LOCTEXT_NAMESPACE
 
 
 	static ELengthUnit GetAutoLength(double length_meters, EAutoUnitType AutoUnit);
 
+	static EPressureUnit GetAutoPressure(double pressure_pascals, EAutoPressureUnitType AutoUnit);
 
 public:
 	
@@ -579,4 +639,14 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatSpeed(float speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC, EAutoUnitType AutoLengthUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static double ConvertPressure(float pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatPressure(float pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA, EAutoPressureUnitType AutoUnit = EAutoPressureUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
 };
