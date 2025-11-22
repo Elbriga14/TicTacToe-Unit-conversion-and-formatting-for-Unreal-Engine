@@ -6,10 +6,6 @@
 
 
 
-//UTicTacToeUnitFormatBPLibrary::UTicTacToeUnitFormatBPLibrary(class FObjectInitializer const &)
-//{
-//}
-
 double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit)
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
