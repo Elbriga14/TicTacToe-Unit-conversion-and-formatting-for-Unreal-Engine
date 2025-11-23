@@ -50,6 +50,14 @@ enum class EAutoPressureUnitType : uint8
 	AUT_MET_AUTO			UMETA(DisplayName = "Auto metric"),
 };
 
+UENUM(BlueprintType)
+enum class EAutoEnergyUnitType : uint8
+{
+	AUT_OFF					UMETA(DisplayName = "Off"),
+	AUT_JOULES				UMETA(DisplayName = "Auto metric"),
+	AUT_WATTH				UMETA(DisplayName = "Auto metric"),
+};
+
 
 UENUM(BlueprintType)
 enum class ELengthUnit : uint8
@@ -230,8 +238,23 @@ enum class EPressureUnit : uint8
 	PU_MET_PSI			UMETA(DisplayName = "PSI"),
 };
 
+UENUM(BlueprintType)
+enum class EEnergyUnit : uint8
+{
+	EU_UJ				UMETA(DisplayName = "microjoule"),
+	EU_MILIJ			UMETA(DisplayName = "milijoule"),
+	EU_J				UMETA(DisplayName = "joule"),
+	EU_KJ				UMETA(DisplayName = "kilojoule"),
+	EU_MJ				UMETA(DisplayName = "megajoule"),
+	EU_WH				UMETA(DisplayName = "watt-hour"),
+	EU_KWH				UMETA(DisplayName = "kilowatt-hour"),
+	EU_MWH				UMETA(DisplayName = "megawatt-hour"),
+	EU_CAL				UMETA(DisplayName = "cal (small cal)"),
+	EU_KCAL				UMETA(DisplayName = "kCal (large cal)"),
+};
+
 UCLASS()
-class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
+class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
@@ -547,6 +570,7 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 
 	inline static const TMap<EPressureUnit, double> PressureConversionToPa =
 	{
+		// Metric
 		{ EPressureUnit::PU_MET_MILIPA		, 0.001					},
 		{ EPressureUnit::PU_MET_CPA			, 0.01					},
 		{ EPressureUnit::PU_MET_DPA			, 0.1					},
@@ -577,12 +601,52 @@ class UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 		{ EPressureUnit::PU_MET_PSI			, LOCTEXT("us_psi", "PSI")		},
 	};
 
+
+	// --- --- ENERGY --- --- //
+
+	inline static const TMap<EEnergyUnit, double> EnergyConversionToJ =
+	{
+		// Joules
+		{ EEnergyUnit::EU_UJ			, 0.000001					},
+		{ EEnergyUnit::EU_MILIJ			, 0.001						},
+		{ EEnergyUnit::EU_J				, 1.0						},
+		{ EEnergyUnit::EU_KJ			, 1000.0					},
+		{ EEnergyUnit::EU_MJ			, 1000000.0					},
+		// Watt-hour
+		{ EEnergyUnit::EU_WH			, 3600.0					},
+		{ EEnergyUnit::EU_KWH			, 3600000.0					},
+		{ EEnergyUnit::EU_MWH			, 3600000000.0				},
+		// Calorie
+		{ EEnergyUnit::EU_CAL			, 0.0						},
+		{ EEnergyUnit::EU_KCAL			, 0.0						},
+	};
+
+	inline static const TMap<EEnergyUnit, FText> EnergyUnitDisplayStrings =
+	{
+		// Joules
+		{ EEnergyUnit::EU_UJ			, LOCTEXT("EU_UJ" ,		"µJ")				},
+		{ EEnergyUnit::EU_MILIJ			, LOCTEXT("EU_MILIJ" ,	"mJ")				},
+		{ EEnergyUnit::EU_J				, LOCTEXT("EU_J" ,		"J")				},
+		{ EEnergyUnit::EU_KJ			, LOCTEXT("EU_KJ" ,		"kJ")				},
+		{ EEnergyUnit::EU_MJ			, LOCTEXT("EU_MJ" ,		"MJ" )				},
+		// Watt-hour
+		{ EEnergyUnit::EU_WH			, LOCTEXT( "EU_WH" ,	"Wh")				},
+		{ EEnergyUnit::EU_KWH			, LOCTEXT("EU_KWH" ,	"kWh")				},
+		{ EEnergyUnit::EU_MWH			, LOCTEXT("EU_MWH" ,	"MWh")				},
+		// Calorie
+		{ EEnergyUnit::EU_CAL			, LOCTEXT("EU_CAL" ,	"cal")				},
+		{ EEnergyUnit::EU_KCAL			, LOCTEXT("EU_KCAL" ,	"kCal" )			},
+	};
+
 #undef LOCTEXT_NAMESPACE
 
 
 	static ELengthUnit GetAutoLength(double length_meters, EAutoUnitType AutoUnit);
 
 	static EPressureUnit GetAutoPressure(double pressure_pascals, EAutoPressureUnitType AutoUnit);
+
+	static EEnergyUnit GetAutoEnergy(double energy_joules, EAutoEnergyUnitType AutoUnit);
+
 
 public:
 	
@@ -647,4 +711,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static FText FormatPressure(float pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA, EAutoPressureUnitType AutoUnit = EAutoPressureUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static double ConvertEnergy(float energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatEnergy(float energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J, EAutoEnergyUnitType AutoUnit = EAutoEnergyUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 };

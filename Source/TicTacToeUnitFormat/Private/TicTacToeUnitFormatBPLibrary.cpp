@@ -41,6 +41,29 @@ EPressureUnit UTicTacToeUnitFormatBPLibrary::GetAutoPressure(double pressure_pas
 	return EPressureUnit::PU_MET_PA;
 }
 
+EEnergyUnit UTicTacToeUnitFormatBPLibrary::GetAutoEnergy(double energy_joules, EAutoEnergyUnitType AutoUnit)
+{
+	switch (AutoUnit)
+	{
+	default: return EEnergyUnit::EU_J;
+		case EAutoEnergyUnitType::AUT_OFF: return EEnergyUnit::EU_J;
+		case EAutoEnergyUnitType::AUT_WATTH:
+		{
+			if (energy_joules < 3600000.0) return EEnergyUnit::EU_WH;
+			if (energy_joules < 3600000000.0) return EEnergyUnit::EU_KWH;
+			return EEnergyUnit::EU_MWH;
+		}
+		case EAutoEnergyUnitType::AUT_JOULES:
+		{
+			if (energy_joules < 0.001) return EEnergyUnit::EU_UJ;
+			if (energy_joules < 0.01) return EEnergyUnit::EU_MILIJ;
+			if (energy_joules < 100.0) return EEnergyUnit::EU_J;
+			if (energy_joules < 1000000) return EEnergyUnit::EU_KJ;
+			return EEnergyUnit::EU_MJ;
+		}
+	}
+}
+
 double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit)
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
@@ -416,5 +439,29 @@ FText UTicTacToeUnitFormatBPLibrary::FormatPressure(float pressure, EPressureUni
 	);
 }
 
+double UTicTacToeUnitFormatBPLibrary::ConvertEnergy(float energy, EEnergyUnit fromUnit, EEnergyUnit toUnit)
+{
+	if (!EnergyConversionToJ.Contains(toUnit)) return 0.0;
+	if (!EnergyConversionToJ.Contains(fromUnit)) return 0.0;
+	return (energy * EnergyConversionToJ[fromUnit]) / EnergyConversionToJ[toUnit];
+}
 
+FText UTicTacToeUnitFormatBPLibrary::FormatEnergy(float energy, EEnergyUnit fromUnit, EEnergyUnit toUnit, EAutoEnergyUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+{
+	EEnergyUnit target_unit = toUnit;
 
+	if (AutoUnit != EAutoEnergyUnitType::AUT_OFF) {
+		double energy_j = ConvertEnergy(energy, fromUnit, EEnergyUnit::EU_J);
+		target_unit = GetAutoEnergy(energy_j, AutoUnit);
+	}
+
+	double energy_converted = ConvertEnergy(energy, fromUnit, target_unit);
+
+	if (!EnergyUnitDisplayStrings.Contains(target_unit)) return FText();
+
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(energy_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		EnergyUnitDisplayStrings[target_unit]
+	);
+}
