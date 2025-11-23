@@ -57,7 +57,7 @@ EEnergyUnit UTicTacToeUnitFormatBPLibrary::GetAutoEnergy(double energy_joules, E
 		{
 			if (energy_joules < 0.001) return EEnergyUnit::EU_UJ;
 			if (energy_joules < 0.01) return EEnergyUnit::EU_MILIJ;
-			if (energy_joules < 100.0) return EEnergyUnit::EU_J;
+			if (energy_joules < 1000.0) return EEnergyUnit::EU_J;
 			if (energy_joules < 1000000) return EEnergyUnit::EU_KJ;
 			return EEnergyUnit::EU_MJ;
 		}
