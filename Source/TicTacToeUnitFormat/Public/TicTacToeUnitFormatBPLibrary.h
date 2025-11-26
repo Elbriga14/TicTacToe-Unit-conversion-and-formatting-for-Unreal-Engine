@@ -253,6 +253,17 @@ enum class EEnergyUnit : uint8
 	EU_KCAL				UMETA(DisplayName = "kCal (large cal)"),
 };
 
+UENUM(BlueprintType)
+enum class EAngleUnit : uint8
+{
+	AU_DEG				UMETA(DisplayName = "Degrees"),
+	AU_RAD				UMETA(DisplayName = "Radian"),
+	AU_MOA				UMETA(DisplayName = "MOA"),
+	AU_MILIR			UMETA(DisplayName = "Miliradian"),
+	AU_MIL_OTAN			UMETA(DisplayName = "MIL (OTAN)"),
+	AU_MIL_RU			UMETA(DisplayName = "MIL (RU)"),
+};
+
 UCLASS()
 class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintFunctionLibrary
 {
@@ -638,6 +649,29 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		{ EEnergyUnit::EU_KCAL			, LOCTEXT("EU_KCAL" ,	"kCal" )			},
 	};
 
+
+	// --- --- ANGLE --- --- //
+
+	inline static const TMap<EAngleUnit, double> AngleConversionToDeg =
+	{
+		{ EAngleUnit::AU_DEG			, 1.0						},
+		{ EAngleUnit::AU_RAD			, 57.2958					},
+		{ EAngleUnit::AU_MOA			, 0.016666666666666			},
+		{ EAngleUnit::AU_MILIR			, 0.0572958					},
+		{ EAngleUnit::AU_MIL_OTAN		, 0.05625					},
+		{ EAngleUnit::AU_MIL_RU			, 0.06						},
+	};
+
+	inline static const TMap<EAngleUnit, FText> AngleUnitDisplayStrings =
+	{
+		{ EAngleUnit::AU_DEG			, LOCTEXT("au_deg",			"°"			)	},
+		{ EAngleUnit::AU_RAD			, LOCTEXT("au_rad",			"rad"		)	},
+		{ EAngleUnit::AU_MOA			, LOCTEXT("au_moa",			"MOA"		)	},
+		{ EAngleUnit::AU_MILIR			, LOCTEXT("au_milir",		"milirad"	)	},
+		{ EAngleUnit::AU_MIL_OTAN		, LOCTEXT("au_milotan",		"mil"		)	},
+		{ EAngleUnit::AU_MIL_RU			, LOCTEXT("au_milru",		"mil"		)	},
+	};
+
 #undef LOCTEXT_NAMESPACE
 
 
@@ -651,72 +685,80 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertLength(float length, ELengthUnit fromUnit = ELengthUnit::LU_MET_CM, ELengthUnit toUnit = ELengthUnit::LU_MET_CM);
+	static double ConvertLength(double length, ELengthUnit fromUnit = ELengthUnit::LU_MET_CM, ELengthUnit toUnit = ELengthUnit::LU_MET_CM);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatLength(float length, ELengthUnit fromUnit=ELengthUnit::LU_MET_CM, ELengthUnit toUnit=ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+	static FText FormatLength(double length, ELengthUnit fromUnit=ELengthUnit::LU_MET_CM, ELengthUnit toUnit=ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 	
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertWeight(float length, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
+	static double ConvertWeight(double length, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatWeight(float weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
-
-
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertVolume(float volume, EVolumeUnit fromUnit = EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit = EVolumeUnit::VU_MET_CM3);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatVolume(float volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+	static FText FormatWeight(double weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
 
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2);
+	static double ConvertVolume(double volume, EVolumeUnit fromUnit = EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit = EVolumeUnit::VU_MET_CM3);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatArea(float volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+	static FText FormatVolume(double volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static double ConvertArea(double volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatArea(double volume, EAreaUnit fromUnit = EAreaUnit::AU_MET_CM2, EAreaUnit toUnit = EAreaUnit::AU_MET_CM2, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
-	static double ConvertTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL);
+	static double ConvertTemperature(double temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatTemperature(float temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+	static FText FormatTemperature(double temperature, ETemperatureUnit fromUnit = ETemperatureUnit::TU_CEL, ETemperatureUnit toUnit = ETemperatureUnit::TU_CEL, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
-	static double ConvertTime(float time, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC);
+	static double ConvertTime(double time, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatTime(float volume, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC, bool AutoUnit = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+	static FText FormatTime(double volume, ETimeUnit fromUnit = ETimeUnit::TU_SEC, ETimeUnit toUnit = ETimeUnit::TU_SEC, bool AutoUnit = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "Convert"), Category = "TicTacToe UnitFormat")
-	static double ConvertSpeed(float speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC);
+	static double ConvertSpeed(double speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatSpeed(float speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC, EAutoUnitType AutoLengthUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
-
-
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertPressure(float pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatPressure(float pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA, EAutoPressureUnitType AutoUnit = EAutoPressureUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+	static FText FormatSpeed(double speed, ELengthUnit fromLengthUnit = ELengthUnit::LU_MET_CM, ELengthUnit toLengthUnit = ELengthUnit::LU_MET_CM, ETimeUnit fromTimeUnit = ETimeUnit::TU_SEC, ETimeUnit toTimeUnit = ETimeUnit::TU_SEC, EAutoUnitType AutoLengthUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertEnergy(float energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J);
+	static double ConvertPressure(double pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static FText FormatEnergy(float energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J, EAutoEnergyUnitType AutoUnit = EAutoEnergyUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+	static FText FormatPressure(double pressure, EPressureUnit fromUnit = EPressureUnit::PU_MET_PA, EPressureUnit toUnit = EPressureUnit::PU_MET_PA, EAutoPressureUnitType AutoUnit = EAutoPressureUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static double ConvertEnergy(double energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatEnergy(double energy, EEnergyUnit fromUnit = EEnergyUnit::EU_J, EEnergyUnit toUnit = EEnergyUnit::EU_J, EAutoEnergyUnitType AutoUnit = EAutoEnergyUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static double ConvertAngle(double angle, EAngleUnit fromUnit = EAngleUnit::AU_DEG, EAngleUnit toUnit = EAngleUnit::AU_DEG);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatAngle(double angle, EAngleUnit fromUnit = EAngleUnit::AU_DEG, EAngleUnit toUnit = EAngleUnit::AU_DEG, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 };

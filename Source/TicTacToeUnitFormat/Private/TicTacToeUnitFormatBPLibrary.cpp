@@ -64,14 +64,14 @@ EEnergyUnit UTicTacToeUnitFormatBPLibrary::GetAutoEnergy(double energy_joules, E
 	}
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertLength(double length, ELengthUnit fromUnit, ELengthUnit toUnit)
 {
 	if (!LengthConversionsToM.Contains(fromUnit)) return 0.0;
 	if (!LengthConversionsToM.Contains(toUnit)) return 0.0;
 	return ( length * LengthConversionsToM[fromUnit] ) / LengthConversionsToM[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatLength(float length, ELengthUnit fromUnit, ELengthUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatLength(double length, ELengthUnit fromUnit, ELengthUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	double length_meters = ConvertLength(length, fromUnit, ELengthUnit::LU_MET_M);
 
@@ -91,14 +91,14 @@ FText UTicTacToeUnitFormatBPLibrary::FormatLength(float length, ELengthUnit from
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertWeight(float length, EWeightUnit fromUnit, EWeightUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertWeight(double length, EWeightUnit fromUnit, EWeightUnit toUnit)
 {
 	if (!WeightConversionToKG.Contains(fromUnit)) return 0.0;
 	if (!WeightConversionToKG.Contains(toUnit)) return 0.0;
 	return ( length * WeightConversionToKG[fromUnit] ) / WeightConversionToKG[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatWeight(float weight, EWeightUnit fromUnit, EWeightUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatWeight(double weight, EWeightUnit fromUnit, EWeightUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	if (!WeightConversionToKG.Contains(fromUnit)) return FText();
 
@@ -158,7 +158,7 @@ FText UTicTacToeUnitFormatBPLibrary::FormatWeight(float weight, EWeightUnit from
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertVolume(float volume, EVolumeUnit fromUnit, EVolumeUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertVolume(double volume, EVolumeUnit fromUnit, EVolumeUnit toUnit)
 {
 	if (!VolumeConversionToM3.Contains(fromUnit)) return 0.0;
 	if (!VolumeConversionToM3.Contains(toUnit)) return 0.0;
@@ -166,7 +166,7 @@ double UTicTacToeUnitFormatBPLibrary::ConvertVolume(float volume, EVolumeUnit fr
 	return ( volume * VolumeConversionToM3[fromUnit] ) / VolumeConversionToM3[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatVolume(float volume, EVolumeUnit fromUnit, EVolumeUnit toUnit, EAutoVolumeUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatVolume(double volume, EVolumeUnit fromUnit, EVolumeUnit toUnit, EAutoVolumeUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	if (!VolumeConversionToM3.Contains(fromUnit)) return FText();
 
@@ -230,14 +230,14 @@ FText UTicTacToeUnitFormatBPLibrary::FormatVolume(float volume, EVolumeUnit from
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertArea(float volume, EAreaUnit fromUnit, EAreaUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertArea(double volume, EAreaUnit fromUnit, EAreaUnit toUnit)
 {
 	if (!AreaConversionToM2.Contains(fromUnit)) return 0.0;
 	if (!AreaConversionToM2.Contains(toUnit)) return 0.0;
 	return ( volume * AreaConversionToM2[fromUnit] ) / AreaConversionToM2[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatArea(float volume, EAreaUnit fromUnit, EAreaUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatArea(double volume, EAreaUnit fromUnit, EAreaUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	if (!AreaConversionToM2.Contains(fromUnit)) return FText();
 
@@ -301,7 +301,7 @@ FText UTicTacToeUnitFormatBPLibrary::FormatArea(float volume, EAreaUnit fromUnit
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertTemperature(float temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertTemperature(double temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit)
 {
 	double temp_k = 0.0;
 	switch (fromUnit)
@@ -328,7 +328,7 @@ double UTicTacToeUnitFormatBPLibrary::ConvertTemperature(float temperature, ETem
 	}
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatTemperature(float temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatTemperature(double temperature, ETemperatureUnit fromUnit, ETemperatureUnit toUnit, int precision, bool ForceSign, bool UseGrouping)
 {
 	if (!TemperatureUnitDisplayStrings.Contains(toUnit)) return FText();
 	double temp_converted = ConvertTemperature(temperature, fromUnit, toUnit);
@@ -339,14 +339,14 @@ FText UTicTacToeUnitFormatBPLibrary::FormatTemperature(float temperature, ETempe
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertTime(float time, ETimeUnit fromUnit, ETimeUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertTime(double time, ETimeUnit fromUnit, ETimeUnit toUnit)
 {
 	if (!TimeConversionToS.Contains(fromUnit)) return 0.0;
 	if (!TimeConversionToS.Contains(toUnit)) return 0.0;
 	return (time * TimeConversionToS[fromUnit]) / TimeConversionToS[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatTime(float volume, ETimeUnit fromUnit, ETimeUnit toUnit, bool AutoUnit, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatTime(double volume, ETimeUnit fromUnit, ETimeUnit toUnit, bool AutoUnit, int precision, bool ForceSign, bool UseGrouping)
 {
 	if (!TimeConversionToS.Contains(fromUnit)) return FText();
 
@@ -383,12 +383,12 @@ FText UTicTacToeUnitFormatBPLibrary::FormatTime(float volume, ETimeUnit fromUnit
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertSpeed(float speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertSpeed(double speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit)
 {
 	return ConvertLength(ConvertTime(speed, ETimeUnit::TU_SEC, toTimeUnit), fromLengthUnit, toLengthUnit);
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(float speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit, EAutoUnitType AutoLengthUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(double speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit, EAutoUnitType AutoLengthUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	ELengthUnit target_unit = toLengthUnit;
 	
@@ -412,14 +412,14 @@ FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(float speed, ELengthUnit fromLe
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertPressure(float pressure, EPressureUnit fromUnit, EPressureUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertPressure(double pressure, EPressureUnit fromUnit, EPressureUnit toUnit)
 {
 	if (!PressureConversionToPa.Contains(fromUnit)) return 0.0;
 	if (!PressureConversionToPa.Contains(toUnit)) return 0.0;
 	return (pressure * PressureConversionToPa[fromUnit]) / PressureConversionToPa[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatPressure(float pressure, EPressureUnit fromUnit, EPressureUnit toUnit, EAutoPressureUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatPressure(double pressure, EPressureUnit fromUnit, EPressureUnit toUnit, EAutoPressureUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	EPressureUnit target_unit = toUnit;
 
@@ -439,14 +439,14 @@ FText UTicTacToeUnitFormatBPLibrary::FormatPressure(float pressure, EPressureUni
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertEnergy(float energy, EEnergyUnit fromUnit, EEnergyUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertEnergy(double energy, EEnergyUnit fromUnit, EEnergyUnit toUnit)
 {
 	if (!EnergyConversionToJ.Contains(toUnit)) return 0.0;
 	if (!EnergyConversionToJ.Contains(fromUnit)) return 0.0;
 	return (energy * EnergyConversionToJ[fromUnit]) / EnergyConversionToJ[toUnit];
 }
 
-FText UTicTacToeUnitFormatBPLibrary::FormatEnergy(float energy, EEnergyUnit fromUnit, EEnergyUnit toUnit, EAutoEnergyUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
+FText UTicTacToeUnitFormatBPLibrary::FormatEnergy(double energy, EEnergyUnit fromUnit, EEnergyUnit toUnit, EAutoEnergyUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	EEnergyUnit target_unit = toUnit;
 
@@ -465,3 +465,24 @@ FText UTicTacToeUnitFormatBPLibrary::FormatEnergy(float energy, EEnergyUnit from
 		EnergyUnitDisplayStrings[target_unit]
 	);
 }
+
+double UTicTacToeUnitFormatBPLibrary::ConvertAngle(double angle, EAngleUnit fromUnit, EAngleUnit toUnit)
+{
+	if (!AngleConversionToDeg.Contains(toUnit)) return 0.0;
+	if (!AngleConversionToDeg.Contains(fromUnit)) return 0.0;
+	return (angle * AngleConversionToDeg[fromUnit]) / AngleConversionToDeg[toUnit];
+}
+
+FText UTicTacToeUnitFormatBPLibrary::FormatAngle(double angle, EAngleUnit fromUnit, EAngleUnit toUnit, int precision, bool ForceSign, bool UseGrouping)
+{
+	double angle_converted = ConvertAngle(angle, fromUnit, toUnit);
+
+	if (!AngleUnitDisplayStrings.Contains(toUnit)) return FText();
+
+	return FText::Format(
+		FText::FromString("{0}{1}"),
+		UKismetTextLibrary::Conv_DoubleToText(angle_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		AngleUnitDisplayStrings[toUnit]
+	);
+}
+
