@@ -91,11 +91,11 @@ FText UTicTacToeUnitFormatBPLibrary::FormatLength(double length, ELengthUnit fro
 	);
 }
 
-double UTicTacToeUnitFormatBPLibrary::ConvertWeight(double length, EWeightUnit fromUnit, EWeightUnit toUnit)
+double UTicTacToeUnitFormatBPLibrary::ConvertWeight(double weight, EWeightUnit fromUnit, EWeightUnit toUnit)
 {
 	if (!WeightConversionToKG.Contains(fromUnit)) return 0.0;
 	if (!WeightConversionToKG.Contains(toUnit)) return 0.0;
-	return ( length * WeightConversionToKG[fromUnit] ) / WeightConversionToKG[toUnit];
+	return ( weight * WeightConversionToKG[fromUnit] ) / WeightConversionToKG[toUnit];
 }
 
 FText UTicTacToeUnitFormatBPLibrary::FormatWeight(double weight, EWeightUnit fromUnit, EWeightUnit toUnit, EAutoUnitType AutoUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
@@ -148,12 +148,12 @@ FText UTicTacToeUnitFormatBPLibrary::FormatWeight(double weight, EWeightUnit fro
 	if (!WeightConversionToKG.Contains(target_unit)) return FText();
 	if (!WeightUnitDisplayStrings.Contains(target_unit)) return FText();
 
-	// Convert meters to target unit
-	double length_converted = weight_kg / WeightConversionToKG[target_unit];
+	// Convert weight to target unit
+	double weight_converted = ConvertWeight(weight, fromUnit, target_unit);// weight_kg / WeightConversionToKG[target_unit];
 
 	return FText::Format(
 		FText::FromString("{0}{1}"),
-		UKismetTextLibrary::Conv_DoubleToText(length_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
+		UKismetTextLibrary::Conv_DoubleToText(weight_converted, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, 0, precision),
 		WeightUnitDisplayStrings[target_unit]
 	);
 }

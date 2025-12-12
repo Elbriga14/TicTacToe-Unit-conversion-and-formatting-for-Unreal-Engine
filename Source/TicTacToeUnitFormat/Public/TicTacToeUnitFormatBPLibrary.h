@@ -224,8 +224,8 @@ UENUM(BlueprintType)
 enum class EPressureUnit : uint8
 {
 	// Metric
-	PU_MET_MILIPA		UMETA(DisplayName = "deciascal"),
-	PU_MET_CPA			UMETA(DisplayName = "centiascal"),
+	PU_MET_MILIPA		UMETA(DisplayName = "decipascal"),
+	PU_MET_CPA			UMETA(DisplayName = "centipascal"),
 	PU_MET_DPA			UMETA(DisplayName = "decipascal"),
 	PU_MET_PA			UMETA(DisplayName = "pascal"),
 	PU_MET_DAPA			UMETA(DisplayName = "decapascal"),
@@ -706,7 +706,7 @@ public:
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
-	static double ConvertWeight(double length, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
+	static double ConvertWeight(double weight, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac", AdvancedDisplay = "3"), Category = "TicTacToe UnitFormat")
 	static FText FormatWeight(double weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
