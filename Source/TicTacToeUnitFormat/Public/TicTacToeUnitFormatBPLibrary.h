@@ -362,7 +362,7 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		{ EWeightUnit::WU_MET_KG			, 1.0					},
 		{ EWeightUnit::WU_MET_TON			, 1000.0				},
 		// Imperial US
-		{ EWeightUnit::WU_US_GR				, 0.0006479891			},
+		{ EWeightUnit::WU_US_GR				, 0.00006479891			},
 		{ EWeightUnit::WU_US_DR				, 0.0017718451953125	},
 		{ EWeightUnit::WU_US_OZ				, 0.028349523125		},
 		{ EWeightUnit::WU_US_LB				, 0.45359237			},
@@ -371,7 +371,7 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		{ EWeightUnit::WU_US_TON_S			, 907.18474				},
 		{ EWeightUnit::WU_US_TON_L			, 1016.0469088			},
 		// Imperial British
-		{ EWeightUnit::WU_BRIT_GR			, 0.0006479891			},
+		{ EWeightUnit::WU_BRIT_GR			, 0.00006479891			},
 		{ EWeightUnit::WU_BRIT_DR			, 0.0017718451953125	},
 		{ EWeightUnit::WU_BRIT_OZ			, 0.028349523125		},
 		{ EWeightUnit::WU_BRIT_LB			, 0.45359237			},
