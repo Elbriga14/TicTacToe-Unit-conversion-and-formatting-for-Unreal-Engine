@@ -287,14 +287,14 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 
 		// Imperial USA
 		{ ELengthUnit::LU_US_TWIP			, 0.0000017638	},
-		{ ELengthUnit::LU_US_MIL			, 0.00000254	},					
+		{ ELengthUnit::LU_US_MIL			, 0.00000254	},
 		{ ELengthUnit::LU_US_POINT			, 0.00003527	},
-		{ ELengthUnit::LU_US_PICA			, 0.00423		},				
+		{ ELengthUnit::LU_US_PICA			, 0.00423		},
 		{ ELengthUnit::LU_US_INCH			, 0.0254		},
-		{ ELengthUnit::LU_US_FOOT			, 0.3048		},				
-		{ ELengthUnit::LU_US_YARD			, 0.9144		},				
-		{ ELengthUnit::LU_US_MILE			, 1609.344		},				
-		{ ELengthUnit::LU_US_LEAGUE			, 4828.032		},		
+		{ ELengthUnit::LU_US_FOOT			, 0.3048		},
+		{ ELengthUnit::LU_US_YARD			, 0.9144		},
+		{ ELengthUnit::LU_US_MILE			, 1609.344		},
+		{ ELengthUnit::LU_US_LEAGUE			, 4828.032		},
 		// Imperial British
 		{ ELengthUnit::LU_BRIT_THOU			, 0.00000254	},
 		{ ELengthUnit::LU_BRIT_BARLEYCORN	, 0.00846		},
@@ -414,7 +414,7 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		// Other
 		{ EWeightUnit::WU_BRIT_SLUG			, LOCTEXT("slug"	,	"slug")		},
 	};
-	
+
 	// --- --- VOLUME --- --- //
 
 	inline static const TMap<EVolumeUnit, double> VolumeConversionToM3 =
@@ -489,20 +489,20 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		{ EVolumeUnit::VU_BRIT_QT			, LOCTEXT("brit_qt"		, "qt")			},
 		{ EVolumeUnit::VU_BRIT_GAL			, LOCTEXT("brit_gal"	, "gal")		},
 		// Imperial US fluid
-		{ EVolumeUnit::VU_US_MIN			, LOCTEXT("us_min"		, "min"		)	},
-		{ EVolumeUnit::VU_US_FLDR			, LOCTEXT("us_fl dr"	, "fl dr"	)	},
-		{ EVolumeUnit::VU_US_TSP			, LOCTEXT("us_tsp"		, "tsp"		)	},
-		{ EVolumeUnit::VU_US_TBSP			, LOCTEXT("us_tbsp"		, "tbsp"	)	},
-		{ EVolumeUnit::VU_US_FLOZ			, LOCTEXT("us_fl oz"	, "fl oz"	)	},
-		{ EVolumeUnit::VU_US_JIG			, LOCTEXT("us_jig"		, "jig"		)	},
-		{ EVolumeUnit::VU_US_GI				, LOCTEXT("us_gi"		, "gi"		)	},
-		{ EVolumeUnit::VU_US_C				, LOCTEXT("us_c"		, "c"		)	},
-		{ EVolumeUnit::VU_US_PT				, LOCTEXT("us_pint"		, "pint"	)	},
-		{ EVolumeUnit::VU_US_QT				, LOCTEXT("us_qt"		, "qt"		)	},
-		{ EVolumeUnit::VU_US_POT			, LOCTEXT("us_pot"		, "pot"		)	},
-		{ EVolumeUnit::VU_US_GAL			, LOCTEXT("us_gal"		, "gal"		)	},
-		{ EVolumeUnit::VU_US_BBL			, LOCTEXT("us_bbl"		, "bbl"		)	},
-		{ EVolumeUnit::VU_US_OILBBL			, LOCTEXT("us_oilbbl"	, "bbl"		)	},
+		{ EVolumeUnit::VU_US_MIN			, LOCTEXT("us_min"		, "min")	},
+		{ EVolumeUnit::VU_US_FLDR			, LOCTEXT("us_fl dr"	, "fl dr")	},
+		{ EVolumeUnit::VU_US_TSP			, LOCTEXT("us_tsp"		, "tsp")	},
+		{ EVolumeUnit::VU_US_TBSP			, LOCTEXT("us_tbsp"		, "tbsp")	},
+		{ EVolumeUnit::VU_US_FLOZ			, LOCTEXT("us_fl oz"	, "fl oz")	},
+		{ EVolumeUnit::VU_US_JIG			, LOCTEXT("us_jig"		, "jig")	},
+		{ EVolumeUnit::VU_US_GI				, LOCTEXT("us_gi"		, "gi")	},
+		{ EVolumeUnit::VU_US_C				, LOCTEXT("us_c"		, "c")	},
+		{ EVolumeUnit::VU_US_PT				, LOCTEXT("us_pint"		, "pint")	},
+		{ EVolumeUnit::VU_US_QT				, LOCTEXT("us_qt"		, "qt")	},
+		{ EVolumeUnit::VU_US_POT			, LOCTEXT("us_pot"		, "pot")	},
+		{ EVolumeUnit::VU_US_GAL			, LOCTEXT("us_gal"		, "gal")	},
+		{ EVolumeUnit::VU_US_BBL			, LOCTEXT("us_bbl"		, "bbl")	},
+		{ EVolumeUnit::VU_US_OILBBL			, LOCTEXT("us_oilbbl"	, "bbl")	},
 		{ EVolumeUnit::VU_US_HOGSHEAD		, LOCTEXT("us_hogshead"	, "hogshead")	},
 		// Imperial US	
 		{ EVolumeUnit::VU_US_IN3			, LOCTEXT("us_in3"		, "in3")		},
@@ -537,22 +537,22 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 	inline static const TMap<EAreaUnit, FText> AreaUnitDisplayStrings =
 	{
 		// Metric
-		{ EAreaUnit::AU_MET_MM2				, LOCTEXT(	"met_mm2",	"mm2"	)	},
-		{ EAreaUnit::AU_MET_CM2				, LOCTEXT(	"met_cm2",	"cm2"	)	},
-		{ EAreaUnit::AU_MET_DM2				, LOCTEXT(	"met_dm2",	"dm2"	)	},
-		{ EAreaUnit::AU_MET_M2				, LOCTEXT(	"met_m2",	"m2"	)	},
-		{ EAreaUnit::AU_MET_DAM2			, LOCTEXT(	"met_dam2",	"Dam2"	)	},
-		{ EAreaUnit::AU_MET_HM2				, LOCTEXT(	"met_hm2",	"hm2"	)	},
-		{ EAreaUnit::AU_MET_HA				, LOCTEXT(	"met_ha",	"ha"	)	},
-		{ EAreaUnit::AU_MET_KM2				, LOCTEXT(	"met_km2",	"km2"	)	},
+		{ EAreaUnit::AU_MET_MM2				, LOCTEXT("met_mm2",	"mm2")	},
+		{ EAreaUnit::AU_MET_CM2				, LOCTEXT("met_cm2",	"cm2")	},
+		{ EAreaUnit::AU_MET_DM2				, LOCTEXT("met_dm2",	"dm2")	},
+		{ EAreaUnit::AU_MET_M2				, LOCTEXT("met_m2",	"m2")	},
+		{ EAreaUnit::AU_MET_DAM2			, LOCTEXT("met_dam2",	"Dam2")	},
+		{ EAreaUnit::AU_MET_HM2				, LOCTEXT("met_hm2",	"hm2")	},
+		{ EAreaUnit::AU_MET_HA				, LOCTEXT("met_ha",	"ha")	},
+		{ EAreaUnit::AU_MET_KM2				, LOCTEXT("met_km2",	"km2")	},
 		// Imperial US						  
-		{ EAreaUnit::AU_US_SQIN				, LOCTEXT(	"us_sqin",	"sq in")	},
-		{ EAreaUnit::AU_US_SQFT				, LOCTEXT(	"us_sqft",	"sq ft")	},
-		{ EAreaUnit::AU_US_SQYD				, LOCTEXT(	"us_sqyd",	"sq yd")	},
-		{ EAreaUnit::AU_US_SQCH				, LOCTEXT(	"us_sq ch",	"sq ch")	},
-		{ EAreaUnit::AU_US_ACRE				, LOCTEXT(	"us_acre",	"acre")		},
-		{ EAreaUnit::AU_US_SEC				, LOCTEXT(	"us_sec",	"sec")		},
-		{ EAreaUnit::AU_US_TWP				, LOCTEXT(	"us_twp",	"twp")		},
+		{ EAreaUnit::AU_US_SQIN				, LOCTEXT("us_sqin",	"sq in")	},
+		{ EAreaUnit::AU_US_SQFT				, LOCTEXT("us_sqft",	"sq ft")	},
+		{ EAreaUnit::AU_US_SQYD				, LOCTEXT("us_sqyd",	"sq yd")	},
+		{ EAreaUnit::AU_US_SQCH				, LOCTEXT("us_sq ch",	"sq ch")	},
+		{ EAreaUnit::AU_US_ACRE				, LOCTEXT("us_acre",	"acre")		},
+		{ EAreaUnit::AU_US_SEC				, LOCTEXT("us_sec",	"sec")		},
+		{ EAreaUnit::AU_US_TWP				, LOCTEXT("us_twp",	"twp")		},
 	};
 
 	// --- --- TEMPERATURE --- --- //
@@ -580,12 +580,12 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 	inline static const TMap<ETimeUnit, FText> TimeUnitDisplayStrings =
 	{
 		// Metric
-		{ ETimeUnit::TU_SEC	,	LOCTEXT( "second"	, "s" )			},
-		{ ETimeUnit::TU_MIN	,	LOCTEXT( "minute"	, "m" )			},
-		{ ETimeUnit::TU_HR	,	LOCTEXT( "hour"		, "h" )			},
-		{ ETimeUnit::TU_DAY	,	LOCTEXT( "day"		, "d" )			},
-		{ ETimeUnit::TU_MO	,	LOCTEXT( "month"	, "m" )			},
-		{ ETimeUnit::TU_YR	,	LOCTEXT( "year"		, "y" )			},
+		{ ETimeUnit::TU_SEC	,	LOCTEXT("second"	, "s")			},
+		{ ETimeUnit::TU_MIN	,	LOCTEXT("minute"	, "m")			},
+		{ ETimeUnit::TU_HR	,	LOCTEXT("hour"		, "h")			},
+		{ ETimeUnit::TU_DAY	,	LOCTEXT("day"		, "d")			},
+		{ ETimeUnit::TU_MO	,	LOCTEXT("month"	, "m")			},
+		{ ETimeUnit::TU_YR	,	LOCTEXT("year"		, "y")			},
 	};
 
 	// --- --- PRESSURE --- --- //
@@ -650,14 +650,14 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 		{ EEnergyUnit::EU_MILIJ			, LOCTEXT("EU_MILIJ" ,	"mJ")				},
 		{ EEnergyUnit::EU_J				, LOCTEXT("EU_J" ,		"J")				},
 		{ EEnergyUnit::EU_KJ			, LOCTEXT("EU_KJ" ,		"kJ")				},
-		{ EEnergyUnit::EU_MJ			, LOCTEXT("EU_MJ" ,		"MJ" )				},
+		{ EEnergyUnit::EU_MJ			, LOCTEXT("EU_MJ" ,		"MJ")				},
 		// Watt-hour
-		{ EEnergyUnit::EU_WH			, LOCTEXT( "EU_WH" ,	"Wh")				},
+		{ EEnergyUnit::EU_WH			, LOCTEXT("EU_WH" ,	"Wh")				},
 		{ EEnergyUnit::EU_KWH			, LOCTEXT("EU_KWH" ,	"kWh")				},
 		{ EEnergyUnit::EU_MWH			, LOCTEXT("EU_MWH" ,	"MWh")				},
 		// Calorie
 		{ EEnergyUnit::EU_CAL			, LOCTEXT("EU_CAL" ,	"cal")				},
-		{ EEnergyUnit::EU_KCAL			, LOCTEXT("EU_KCAL" ,	"kCal" )			},
+		{ EEnergyUnit::EU_KCAL			, LOCTEXT("EU_KCAL" ,	"kCal")			},
 	};
 
 
@@ -676,13 +676,13 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 
 	inline static const TMap<EAngleUnit, FText> AngleUnitDisplayStrings =
 	{
-		{ EAngleUnit::AU_DEG			, LOCTEXT("au_deg",			"°"			)	},
-		{ EAngleUnit::AU_RAD			, LOCTEXT("au_rad",			"rad"		)	},
-		{ EAngleUnit::AU_MOA			, LOCTEXT("au_moa",			"MOA"		)	},
-		{ EAngleUnit::AU_MILIR			, LOCTEXT("au_milir",		"milirad"	)	},
-		{ EAngleUnit::AU_MIL_OTAN		, LOCTEXT("au_milotan",		"mil"		)	},
-		{ EAngleUnit::AU_MIL_RU			, LOCTEXT("au_milru",		"mil"		)	},
-		{ EAngleUnit::AU_MIL_SU			, LOCTEXT("au_milsu",		"mil"		)	},
+		{ EAngleUnit::AU_DEG			, LOCTEXT("au_deg",			"°")	},
+		{ EAngleUnit::AU_RAD			, LOCTEXT("au_rad",			"rad")	},
+		{ EAngleUnit::AU_MOA			, LOCTEXT("au_moa",			"MOA")	},
+		{ EAngleUnit::AU_MILIR			, LOCTEXT("au_milir",		"milirad")	},
+		{ EAngleUnit::AU_MIL_OTAN		, LOCTEXT("au_milotan",		"mil")	},
+		{ EAngleUnit::AU_MIL_RU			, LOCTEXT("au_milru",		"mil")	},
+		{ EAngleUnit::AU_MIL_SU			, LOCTEXT("au_milsu",		"mil")	},
 	};
 
 #undef LOCTEXT_NAMESPACE
@@ -696,20 +696,20 @@ class TICTACTOEUNITFORMAT_API UTicTacToeUnitFormatBPLibrary : public UBlueprintF
 
 
 public:
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertLength(double length, ELengthUnit fromUnit = ELengthUnit::LU_MET_CM, ELengthUnit toUnit = ELengthUnit::LU_MET_CM);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac", AdvancedDisplay = "3"), Category = "TicTacToe UnitFormat")
-	static FText FormatLength(double length, ELengthUnit fromUnit=ELengthUnit::LU_MET_CM, ELengthUnit toUnit=ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
-	
+	static FText FormatLength(double length, ELengthUnit fromUnit = ELengthUnit::LU_MET_CM, ELengthUnit toUnit = ELengthUnit::LU_MET_M, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
 	static double ConvertWeight(double weight, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac", AdvancedDisplay = "3"), Category = "TicTacToe UnitFormat")
-	static FText FormatWeight(double weight, EWeightUnit fromUnit=EWeightUnit::WU_MET_KG, EWeightUnit toUnit=EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit=EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+	static FText FormatWeight(double weight, EWeightUnit fromUnit = EWeightUnit::WU_MET_KG, EWeightUnit toUnit = EWeightUnit::WU_MET_KG, EAutoUnitType AutoUnit = EAutoUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
@@ -717,7 +717,7 @@ public:
 	static double ConvertVolume(double volume, EVolumeUnit fromUnit = EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit = EVolumeUnit::VU_MET_CM3);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac", AdvancedDisplay = "3"), Category = "TicTacToe UnitFormat")
-	static FText FormatVolume(double volume, EVolumeUnit fromUnit= EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit= EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit= EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits=false, int precision=1, bool ForceSign=false, bool UseGrouping=false);
+	static FText FormatVolume(double volume, EVolumeUnit fromUnit = EVolumeUnit::VU_MET_CM3, EVolumeUnit toUnit = EVolumeUnit::VU_MET_CM3, EAutoVolumeUnitType AutoUnit = EAutoVolumeUnitType::AUT_OFF, bool UseExtendedAutoUnits = false, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
 
 
 
@@ -774,4 +774,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac", AdvancedDisplay = "3"), Category = "TicTacToe UnitFormat")
 	static FText FormatAngle(double angle, EAngleUnit fromUnit = EAngleUnit::AU_DEG, EAngleUnit toUnit = EAngleUnit::AU_DEG, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "TicTac"), Category = "TicTacToe UnitFormat")
+	static FText FormatPercentage(double percentage, int precision = 1, bool ForceSign = false, bool UseGrouping = false);
+
 };

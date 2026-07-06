@@ -486,3 +486,11 @@ FText UTicTacToeUnitFormatBPLibrary::FormatAngle(double angle, EAngleUnit fromUn
 	);
 }
 
+FText UTicTacToeUnitFormatBPLibrary::FormatPercentage(double percentage, int precision, bool ForceSign, bool UseGrouping)
+{
+	return FText::Format(
+		FText::FromString("{0}%"),
+		UKismetTextLibrary::Conv_DoubleToText(percentage * 100.0, ERoundingMode::HalfToEven, ForceSign, UseGrouping, 1, 324, precision)
+	);
+}
+
