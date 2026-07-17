@@ -385,21 +385,20 @@ FText UTicTacToeUnitFormatBPLibrary::FormatTime(double volume, ETimeUnit fromUni
 
 double UTicTacToeUnitFormatBPLibrary::ConvertSpeed(double speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit)
 {
-	return ConvertLength(ConvertTime(speed, ETimeUnit::TU_SEC, toTimeUnit), fromLengthUnit, toLengthUnit);
+	return ConvertLength(speed, fromLengthUnit, toLengthUnit) / ConvertTime(1.0, fromTimeUnit, toTimeUnit);
 }
 
 FText UTicTacToeUnitFormatBPLibrary::FormatSpeed(double speed, ELengthUnit fromLengthUnit, ELengthUnit toLengthUnit, ETimeUnit fromTimeUnit, ETimeUnit toTimeUnit, EAutoUnitType AutoLengthUnit, bool UseExtendedAutoUnits, int precision, bool ForceSign, bool UseGrouping)
 {
 	ELengthUnit target_unit = toLengthUnit;
 	
-	double speed_converted = ConvertSpeed(speed, fromLengthUnit, ELengthUnit::LU_MET_M, fromTimeUnit, toTimeUnit);
 
 	// Convert to m/time, determine best unit, then convert to that unit
 	if (AutoLengthUnit == EAutoUnitType::AUT_MET_AUTO || AutoLengthUnit == EAutoUnitType::AUT_IMP_US_AUTO) {
-		speed_converted = ConvertSpeed(speed, fromLengthUnit, ELengthUnit::LU_MET_M, fromTimeUnit, toTimeUnit);
-		target_unit = GetAutoLength(speed_converted, AutoLengthUnit);
-		speed_converted = ConvertSpeed(speed, fromLengthUnit, target_unit, fromTimeUnit, toTimeUnit);
+		target_unit = GetAutoLength(ConvertSpeed(speed, fromLengthUnit, ELengthUnit::LU_MET_M, fromTimeUnit, toTimeUnit), AutoLengthUnit);
 	}
+
+	double speed_converted = ConvertSpeed(speed, fromLengthUnit, target_unit, fromTimeUnit, toTimeUnit);
 	
 	if (!LengthUnitDisplayStrings.Contains(target_unit)) return FText();
 	if (!TimeUnitDisplayStrings.Contains(toTimeUnit)) return FText();
